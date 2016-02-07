@@ -1,0 +1,20 @@
+app:
+  image: anroots/dag
+  ports:
+    - 80
+  links:
+    - db
+  environment:
+    APP_ENV: production
+    APP_DEBUG: 'false'
+db:
+  image: mariadb
+  environment:
+    # The 'empty' password variables need to be set from the CLI, like so:
+    # MYSQL_PASSWORD=pass MYSQL_ROOT_PASSWORD=pass docker-compose up
+    MYSQL_ROOT_PASSWORD:
+    MYSQL_PASSWORD:
+    MYSQL_USER: app
+    MYSQL_DATABASE: app
+  ports:
+    - 3306

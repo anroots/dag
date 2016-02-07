@@ -1,0 +1,19 @@
+app:
+  build: .
+
+  # Mount the source directory to the image so we wouldn't have to rebuild for each change
+  volumes:
+    - ./:/var/www
+  links:
+    - db
+  environment:
+    APP_ENV: local
+    APP_DEBUG: 'true'
+
+db:
+  environment:
+    # Give default passwords for the database. For local, dev use only!
+    MYSQL_ROOT_PASSWORD: SIt3PmJVJKh0
+    MYSQL_PASSWORD: q0j4u0OQpkMa
+    MYSQL_USER: app
+    MYSQL_DATABASE: app
