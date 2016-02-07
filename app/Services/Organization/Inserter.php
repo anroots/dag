@@ -6,6 +6,9 @@ use App\Contracts\Organization\RelationInserter;
 use App\Db\Organization;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * {@inheritdoc}
+ */
 class Inserter implements RelationInserter
 {
     /**
@@ -21,6 +24,9 @@ class Inserter implements RelationInserter
         $this->organization = $organization;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function insert(array $rows)
     {
         foreach ($rows as $row) {
@@ -29,8 +35,11 @@ class Inserter implements RelationInserter
     }
 
     /**
-     * @param array $row
-     * @param int|null $parent
+     * Recursive function to insert a company and its daughter relations
+     *
+     * @param array $row The name of the company plus any (recursive) daughters it might have
+     *                   Example: ['org_name' => 'Big', 'daughters' => ['org_name' => 'Small']]
+     * @param int|null $parent The ID of the row's parent node
      */
     private function insertRow(array $row, int $parent = null)
     {
@@ -71,8 +80,8 @@ class Inserter implements RelationInserter
     }
 
     /**
-     * @param $parent
-     * @param $organizationId
+     * @param int $parent
+     * @param int $organizationId
      * @return bool
      */
     private function hasParent(int $organizationId, int $parent = null): bool
@@ -81,10 +90,10 @@ class Inserter implements RelationInserter
     }
 
     /**
-     * @param $parent
-     * @param $organizationId
+     * @param int $parent
+     * @param int $organizationId
      */
-    private function insertRelation($parent, $organizationId)
+    private function insertRelation(int $parent, int $organizationId)
     {
         DB::table('relations')->insert(['head' => $parent, 'tail' => $organizationId]);
     }

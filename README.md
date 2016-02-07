@@ -1,17 +1,24 @@
 # Organization Relationships
 
-This project models a database of organization relationships as a directed graph.
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE.md)
+[![Build Status][ico-travis]][link-travis]
+[![Total Downloads][ico-downloads]][link-downloads]
 
-Interaction with the database is done over a HTTP JSON API.
+This project models a database of organization relationships as a directed graph. Interaction with the database is done over a HTTP JSON API.
+
+A working demo of the API can be found at [46.101.137.12](http://46.101.137.12).
 
 Below is an example of the type of graph modelled by this project. Each node represents a company.
 
 ![Example Graph](doc/graph.png)
 
+*N.B.* Terminology: organization, company and vertex are used interchangeably.
+
 ## Requirements
 
 The project requires PHP >= 7.0 with PDO, MySQL, OpenSSL and mbstring extensions. A MySQL database is used as the back-end storage.
-Docker and Docker Compose runtime environment is assumed althoug not required.
+Docker and Docker Compose runtime environment is assumed although not required.
 
 ## Install
 
@@ -33,6 +40,16 @@ Assuming a simple VPS with Docker and Docker Compose installed:
 * Run `docker-compose up` to start the web and database servers
 * Run `docker ps` to find the web server port
 * Interact with the server via HTTP (see documentation below)
+
+### Migrating the Database
+
+The initial setup involves database migration and optionally, seeding.
+
+Assuming that the project runs in a Docker container...
+
+* Go into the container: `docker exec -it dag_app_1 bash`
+* Migrate the database: `./artisan migrate`
+* Seed the database: `./artisan db:seed`
 
 ## Testing
 
@@ -59,6 +76,7 @@ Show all companies that relate to the specified company.
 #### Query Parameters
 
 * `name` (string|required) The name of the vertex relative to which relationships are shown.
+* `page` (int|optional) Current page number
 
 #### Sample Response
 
@@ -125,3 +143,21 @@ Insert new organizations and relations to the database.
   }
 ]
 ```
+
+## Performance Considerations
+
+The current implementation of the project is meant to handle small to medium usage. ~>100K relations will be slow if not unusable.
+
+A better (read: optimized for high data set / high load applications) solution would involve a better back-end data model (perhaps something that can optimize for "sister" relationships, as [detailed here](http://www.codeproject.com/Articles/22824/A-Model-to-Represent-Directed-Acyclic-Graphs-DAG-o)) and additional techniques such as caching, queueing and load-balancing.
+## License
+
+MIT license
+
+[ico-version]: https://img.shields.io/packagist/v/anroots/dag.svg?style=flat-square
+[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/anroots/dag/master.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/anroots/dag.svg?style=flat-square
+
+[link-packagist]: https://packagist.org/packages/anroots/dag
+[link-travis]: https://travis-ci.org/anroots/dag
+[link-downloads]: https://packagist.org/packages/anroots/dag

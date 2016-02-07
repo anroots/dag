@@ -7,6 +7,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     a2enmod rewrite
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 WORKDIR /var/www
 
 # Add and enable VirtualHost definition
@@ -18,3 +21,6 @@ COPY build/apache2.conf /etc/apache2/
 
 # Bundle the source code inside the image
 COPY ./ /var/www
+
+RUN composer update -vvv && \
+    chown -R www-data:www-data storage

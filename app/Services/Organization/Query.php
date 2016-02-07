@@ -7,8 +7,14 @@ use App\Db\Organization;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * {@inheritdoc}
+ */
 class Query implements RelationQuery
 {
+    /**
+     * Maximum number of results to show on one 'page' of the response
+     */
     const MAX_RECORDS_PER_PAGE = 100;
 
     /**
@@ -16,14 +22,16 @@ class Query implements RelationQuery
      */
     protected $organization;
 
+    /**
+     * @param Organization $organization
+     */
     public function __construct(Organization $organization)
     {
         $this->organization = $organization;
     }
 
     /**
-     * @param string $name
-     * @return array
+     * {@inheritdoc}
      */
     public function getRelatedByName(string $name):array
     {
@@ -36,6 +44,12 @@ class Query implements RelationQuery
         return $this->getRelated($organization->id);
     }
 
+    /**
+     * Get a list of related organizations by an organization ID
+     *
+     * @param int $organizationId
+     * @return array Example: [['org_name' => 'Big', 'relationship_type' => 'sister']]
+     */
     protected function getRelated(int $organizationId):array
     {
 
@@ -48,22 +62,22 @@ class Query implements RelationQuery
             ->orderBy('name')
             ->paginate(self::MAX_RECORDS_PER_PAGE);
 
-        $result = [];
+        $relatedOrganizations = [];
         foreach ($organizations as $organization) {
             if (in_array($organization->id, $parents)) {
-                $type = 'parent';
+                $relation = 'parent';
             } elseif (in_array($organization->id, $children)) {
-                $type = 'daughter';
+                $relation = 'daughter';
             } else {
-                $type = 'sister';
+                $relation = 'sister';
             }
 
-            $result[] = [
+            $relatedOrganizations[] = [
                 'org_name' => $organization->name,
-                'relationship_type' => $type
+                'relationship_type' => $relation
             ];
         }
 
-        return $result;
+        return $relatedOrganizations;
     }
 }

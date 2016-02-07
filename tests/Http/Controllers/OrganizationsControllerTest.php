@@ -29,6 +29,14 @@ class OrganizationsControllerTest extends TestCase
     }
 
     /**
+     * @covers ::store
+     */
+    public function testStoreThrowsWhenInputJsonIsInvalid()
+    {
+        $this->post('organization', ['a' => 3], ['Accept' => 'application/json'])->seeStatusCode(400);
+    }
+
+    /**
      * @covers ::truncate
      */
     public function testTruncateDeletesAllData()
