@@ -22,5 +22,5 @@ COPY build/apache2.conf /etc/apache2/
 # Bundle the source code inside the image
 COPY ./ /var/www
 
-RUN composer update -vvv && \
+RUN composer install -vvv && \
     chown -R www-data:www-data storage
