@@ -50,7 +50,7 @@ class Inserter implements RelationInserter
             return;
         }
 
-        $organizationId = $this->insertOrganization($organizationName);
+        $organizationId = $this->insertOrFetch($organizationName);
 
         if ($this->hasParent($organizationId, $parent)) {
             $this->insertRelation($parent, $organizationId);
@@ -65,42 +65,48 @@ class Inserter implements RelationInserter
     }
 
     /**
-     * @param string $orgName
-     * @return int
+     * Return organization ID by its name. If the organization does not exist, create it
+     *
+     * @param string $organizationName
+     * @return int The ID of the organization
      */
-    private function insertOrganization(string $orgName) : int
+    private function insertOrFetch(string $organizationName) : int
     {
-        $organization = $this->organization->getByName($orgName);
+        $organization = $this->organization->getByName($organizationName);
 
         if ($organization !== null) {
             return $organization->id;
         }
 
-        return DB::table('organizations')->insertGetId(['name' => $orgName]);
+        return DB::table('organizations')->insertGetId(['name' => $organizationName]);
     }
 
     /**
-     * @param int $parent
+     * Check if the organization has a parent with the specified ID
+     *
+     * @param int $parentId
      * @param int $organizationId
      * @return bool
      */
-    private function hasParent(int $organizationId, int $parent = null): bool
+    private function hasParent(int $organizationId, int $parentId = null): bool
     {
-        return $parent !== null && !$this->organization->hasChild($parent, $organizationId);
+        return $parentId !== null && !$this->organization->hasChild($parentId, $organizationId);
     }
 
     /**
-     * @param int $parent
-     * @param int $organizationId
+     * Connect two organizations with a parent-child relation
+     *
+     * @param int $parentId
+     * @param int $childId
      */
-    private function insertRelation(int $parent, int $organizationId)
+    private function insertRelation(int $parentId, int $childId)
     {
-        DB::table('relations')->insert(['head' => $parent, 'tail' => $organizationId]);
+        DB::table('relations')->insert(['head' => $parentId, 'tail' => $childId]);
     }
 
     /**
      * @param array $row
-     * @return bool
+     * @return bool True if the input row has sibling rows
      */
     private function hasSiblings(array $row)
     {
