@@ -2,8 +2,8 @@ FROM php:7-apache
 
 # Install PHP extensions required by Lumen (framework)
 RUN apt-get update && \
-    apt-get install -y libmcrypt-dev && \
-    docker-php-ext-install pdo pdo_mysql mcrypt mbstring && \
+    apt-get install -y libmcrypt-dev zlib1g-dev && \
+    docker-php-ext-install pdo pdo_mysql mcrypt mbstring zip && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     a2enmod rewrite
 
