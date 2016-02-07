@@ -1,12 +1,15 @@
 {
     "name": "anroots/dag",
-    "description":"Model organization relations as a directed acyclic graph",
+    "description":"Model organization relations as a directed graph",
     "license": "MIT",
     "type": "project",
     "require": {
         "php": ">=7",
         "laravel/lumen-framework": "5.2.*",
-        "vlucas/phpdotenv": "~2.2"
+        "vlucas/phpdotenv": "~2.2",
+        "ext-pdo":"*",
+        "ext-mbstring": "*",
+        "ext-openssl":"*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.5",

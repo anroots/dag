@@ -8,6 +8,7 @@ app:
     - db
   environment:
     APP_ENV: local
+    APP_KEY: fFWDcIvk8XC1vEzCaq370uSDNROEJJxu
     APP_DEBUG: 'true'
 
 db:
