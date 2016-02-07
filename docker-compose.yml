@@ -1,3 +1,6 @@
+# This is production configuration for the app
+# Environment variables that are listed, but are missing a value MUST be given from the environment
+# (example: `$ MYSQL_PASSWORD=pass MYSQL_ROOT_PASSWORD=pass docker-compose up`)
 app:
   image: anroots/dag
   ports:
@@ -7,15 +10,15 @@ app:
   environment:
     APP_ENV: production
     APP_DEBUG: 'false'
-    # Provide this from the environment
+    # Random, secret key
     APP_KEY:
 db:
   image: mariadb
   environment:
-    # The 'empty' password variables need to be set from the CLI, like so:
-    # MYSQL_PASSWORD=pass MYSQL_ROOT_PASSWORD=pass docker-compose up
+    # Database passwords
     MYSQL_ROOT_PASSWORD:
     MYSQL_PASSWORD:
+
     MYSQL_USER: app
     MYSQL_DATABASE: app
   ports:

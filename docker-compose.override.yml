@@ -1,3 +1,5 @@
+# This is development configuration
+# Use in the local machine only
 app:
   build: .
 
