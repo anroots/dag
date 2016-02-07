@@ -6,6 +6,7 @@ use App\Contracts\Organization\RelationInserter;
 use App\Contracts\Organization\RelationQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrganizationsController extends Controller
@@ -32,7 +33,8 @@ class OrganizationsController extends Controller
      */
     public function truncate()
     {
-        Artisan::call('migrate:refresh');
+        DB::table('relations')->delete();
+        DB::table('organizations')->delete();
 
         return response('', 204);
     }
