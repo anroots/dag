@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Organization\RelationInserter;
 use App\Contracts\Organization\RelationQuery;
+use App\Db\Organization;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class OrganizationsController extends Controller
@@ -29,12 +28,12 @@ class OrganizationsController extends Controller
     /**
      * Delete everything from the database
      *
+     * @param Organization $organization
      * @return Response
      */
-    public function truncate()
+    public function truncate(Organization $organization)
     {
-        DB::table('relations')->delete();
-        DB::table('organizations')->delete();
+        $organization->truncate();
 
         return response('', 204);
     }

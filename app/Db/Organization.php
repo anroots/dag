@@ -80,4 +80,15 @@ class Organization
             ->whereIn('tail', collect($ids))
             ->lists('head');
     }
+
+    /**
+     * Truncate organization tables
+     */
+    public function truncate(){
+
+        DB::transaction(function () {
+            DB::table('relations')->delete();
+            DB::table('organizations')->delete();
+        });
+    }
 }
