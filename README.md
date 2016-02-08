@@ -111,6 +111,19 @@ Delete all organizations and relationships (truncate the database).
 
 Insert new organizations and relations to the database.
 
+The endpoint accepts an array of objects with the structure
+
+```json
+[
+  {
+    "org_name": "Company Name",
+    "daughters": [{}]
+  }
+]
+```
+
+where `daughters` key can contain a nested version of the `org_name` object.
+
 ### Query Parameters
 
 *None*
@@ -119,7 +132,7 @@ Insert new organizations and relations to the database.
 
 *(empty)*
 
-### Sample Request Body
+### Sample Request
 
 ```json
 [

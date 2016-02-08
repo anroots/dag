@@ -86,7 +86,7 @@ class Organization
      */
     public function truncate(){
 
-        DB::transaction(function () {
+        DB::transaction(function() {
             DB::table('relations')->delete();
             DB::table('organizations')->delete();
         });

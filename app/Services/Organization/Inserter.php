@@ -29,9 +29,12 @@ class Inserter implements RelationInserter
      */
     public function insert(array $rows)
     {
-        foreach ($rows as $row) {
-            $this->insertRow($row);
-        }
+
+        DB::transaction(function () use ($rows) {
+            foreach ($rows as $row) {
+                $this->insertRow($row);
+            }
+        });
     }
 
     /**
