@@ -7,8 +7,6 @@
 
 This project models a database of organization relationships as a directed graph. Interaction with the database is done over a HTTP JSON API.
 
-A working demo of the API can be found at [46.101.137.12](http://46.101.137.12).
-
 Below is an example of the type of graph modelled by this project. Each node represents a company.
 
 ![Example Graph](doc/graph.png)

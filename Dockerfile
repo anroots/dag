@@ -19,8 +19,8 @@ RUN a2enmod ssl && a2ensite 000-default
 # Override default Apache2 runtime conf
 COPY build/apache2.conf /etc/apache2/
 
-# Bundle the source code inside the image
+# Bundle the source code into the image
 COPY ./ /var/www
 
-RUN composer install -vvv && \
+RUN composer install -vv && \
     chown -R www-data:www-data storage
